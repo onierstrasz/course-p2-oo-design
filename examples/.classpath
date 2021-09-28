@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="Etc/Annotations/src"/>
+	<classpathentry kind="src" path="Etc/Generics/src"/>
+	<classpathentry kind="src" path="Etc/Panoptikum/src"/>
+	<classpathentry kind="src" path="p2-GenStack/src"/>
+	<classpathentry kind="src" path="p2-JExample/src"/>
+	<classpathentry kind="src" path="p2-Money/src"/>
+	<classpathentry kind="src" path="p2-Patterns/src"/>
+	<classpathentry kind="src" path="p2-Shapes/src"/>
+	<classpathentry kind="src" path="p2-SnakesAndLadders/src"/>
+	<classpathentry kind="src" path="p2-Stack-OBSOLETE/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v0/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v1/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v2/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v3/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v4/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v5/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v6/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v7-swing/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v7/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v8/src"/>
+	<classpathentry kind="src" path="p2-TicTacToe/p2-TicTacToe-v9/src"/>
+	<classpathentry kind="lib" path="p2-JExample/jexample-4.5-391.jar"/>
+	<classpathentry kind="lib" path="p2-SnakesAndLadders/jexample-4.5-391.jar"/>
+	<classpathentry kind="lib" path="p2-TicTacToe/p2-TicTacToe-v8/junit.jar"/>
+	<classpathentry kind="lib" path="p2-TicTacToe/p2-TicTacToe-v8/TicTacToeGUI.jar"/>
+	<classpathentry kind="lib" path="p2-TicTacToe/p2-TicTacToe-v9/junit.jar"/>
+	<classpathentry kind="lib" path="p2-TicTacToe/p2-TicTacToe-v9/TicTacToeGUI.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="p2-TicTacToe/p2-TicTacToe-v9/bin"/>
+</classpath>

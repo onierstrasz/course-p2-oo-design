@@ -1,0 +1,53 @@
+<project name="TicTacToeGUI" default="all" basedir=".">
+	<!-- set global properties for this build -->
+	<property name="src" value="src"/>
+	<property name="build" value="build"/>
+	<property name="doc" value="doc"/>
+	<property name="jar" value="TicTacToeGUI.jar"/>
+
+	<target name="all" depends="jar,jdoc"/>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}"/>
+		<copy todir="${build}/tictactoe/gui/images">
+			<fileset dir="${src}/tictactoe/gui/images"/>
+		</copy>
+		<mkdir dir="${doc}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}"
+			source="1.5" target="1.5"
+			classpath="junit.jar" />
+	</target>
+
+	<target name="jdoc" depends="init">
+		<!-- Generate the javadoc -->
+		<javadoc destdir="${doc}" source="1.5">
+			<fileset dir="${src}" includes="**/*.java"/>
+		</javadoc>
+	</target>
+
+	<target name="jar" depends="compile,rmic">
+		<jar jarfile="${jar}" manifest="${src}/tictactoe/gui/manifest-run" basedir="${build}"/>
+	</target>
+
+	<target name="rmic" depends="compile">
+		<rmic classname="tictactoe.server.GameServer" base="${build}" />
+		<rmic classname="tictactoe.server.GameProxy" base="${build}" />
+		<rmic classname="tictactoe.server.GameObserver" base="${build}" />
+	 </target>
+		
+	<target name="clean">
+		<!-- Delete the ${build} directory -->
+		<delete dir="${build}"/>
+		<delete dir="${doc}"/>
+		<delete>
+			<fileset dir="." includes="TicTacToeGUI.jar"/>
+		</delete>
+	</target>
+</project>

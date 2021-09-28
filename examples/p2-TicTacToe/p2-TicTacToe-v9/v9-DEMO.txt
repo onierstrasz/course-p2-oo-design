@@ -1,0 +1,36 @@
+***
+
+# RMI TicTacToe demo notes:
+
+- RMI demo will not run through VPN or eduroam
+- must run server and 1 client on asterix via X11
+- run second client on desktop mac via VNC
+
+* Adapt this script to the actual machines and folder locations
+
+NB: Best use the mirror of the precompiled version on asterix
+
+---
+
+	open /Applications/Utilities/XQuartz.app &
+
+start an xterm!
+
+	ssh -Y oscar@asterix.unibe.ch
+
+	cd p2-tictactoe
+	sh killserver.command
+	sh server.command
+	sh clientAsterix.command
+
+	open vnc://macrocosm.inf.unibe.ch
+	cd /home/oscar/p2-tictactoe
+	sh clientAsterix.command
+
+---
+
+Troubleshooting
+
+Be sure to run "module load jdk" on asterix to get the right version of Java.
+
+---

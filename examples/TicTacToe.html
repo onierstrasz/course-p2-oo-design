@@ -1,0 +1,227 @@
+<html>
+<!--
+URL: http://www.iam.unibe.ch/~scg/Teaching/P2/
+Author: Oscar.Nierstrasz@iam.unibe.ch
+Date: $Date: 2008-03-01 17:31:14 +0100 (Sat, 01 Mar 2008) $
+-->
+<head>
+<title>P2 TicTacToe Examples</title>
+<style TYPE="text/css">
+<!--
+body { font-family: Arial, Helvetica, sans-serif; }
+td { font-family: Arial, Helvetica, sans-serif; }
+th { font-family: Arial, Helvetica, sans-serif; }
+.lastModified {
+	font-size: 10px;
+	font-style: italic;
+	text-align: right;
+}
+.background { background-color: #CCCCCC; }
+a:active { font-style: italic; }
+a:link {
+	text-decoration: none;
+	color: #000099;
+}
+a:visited {
+	color: #660033;
+	text-decoration: none;
+}
+a:hover {
+	color: #990000;
+	text-decoration: underline;
+}
+.menu {
+	font-size: 9px;
+	text-align: center;
+}
+-->
+</style>
+</head>
+
+<body>
+<h1>P2 TicTacToe Examples</h1>
+
+<p>The TicTacToe game is used in lectures 5-7.  We iteratively 
+develop a simple ascii game in lecture 5 (versions 0-2).  In lecture 6 
+we then refactor the game and use inheritance to handle as well Gomoku, a 
+similar game played on a Go board (versions 3-6).  Next, in lecture 7 
+we develop a GUI interface using the Java AWT (version 7-8).  
+Finally, we distribute the game using RMI (version 9).  
+During each iteration, we make sure all our regression tests run before 
+freezing the version.</p>
+
+<p>The notes that follow below document the refactoring steps taken as new 
+features are added.  They are meant to complement the lecture notes, not 
+replace them.</p>
+
+<!-- ---------------------------------------------------------------- -->
+<HR/>
+<h2>Iterative Development &mdash; Basic Game Logic</h2>
+
+<p>Here we iteratively develop classes to play the game of 
+TicTacToe.</p>
+
+<h3>Version 0</h3>
+
+<p>First we implement an empty skeleton consisting of the classes TicTacToe (modeling the game) and GameDriver (to start the game). This version does nothing but run.</p>
+
+<p>Note that the version numbers are actually cvs tags for complete versions of the game, and do not refer to the revision numbers of the individual files.</p>
+
+<h3>Version 1</h3>
+
+<p>Now we model the game state.
+We add TicTacToeTest.testState to exercise game state.
+We add TicTacToe getters and setters to access the game state (using chess notation).
+We also add preconditions to the getters and setters, and we define TicTacToe.toString to visualize game state</p>
+
+
+<h3>Version 2</h3>
+
+<p>Now we add the game logic.
+This is the first usable game with a primitive ascii interface.
+We add test scenarios to TicTacToeTest in which we play a complete game and check the winner and the number of squares left.
+We also add a Player class and a special constructor for scripted moves.</p>
+
+<p>The TicTacToe class has been completed 
+to maintain the game invariants, and we explicitly check pre-conditions and 
+invariants at various points.  Note that the logic of 
+TicTacToe.checkWinner() is ugly -- checking for rows, columns or diagonals 
+should perhaps be factored out to a separate, more generic method.</p>
+
+<p>We add TicTacToe methods to move, and test for winning.
+Finally we expand the GameDriver to instantiate Player and trigger moves.</p>
+
+<!-- ---------------------------------------------------------------- -->
+<HR/>
+<h2>Inheritance &mdash; Gomoku</h2>
+
+<p>In versions 1 through 6
+iteratively refactor TicTacToe so that it inherits from an 
+AbstractBoardGame, which in turn implements a BoardGame interface.  Gomoku 
+is a similar game that shares the same interface and almost all of the same 
+implementation.  The refactoring steps change the TicTacToe design so that 
+the two games can share as much as possible.</p>
+
+<h3>Version 3</h3>
+
+<p>In version 3 we add the BoardGame interface and patch the GameDriver and 
+TicTacToe to use that interface.  We also patch the tests to be silent by 
+default. We do this by introducing a NullOutputStream which simply discards its input.
+We move all printing from Player etc. to GameDriver (now we need BoardGame.currentPlayer()).
+We change GameDriver to print to a PrintStream, and TicTacToeTest to play the game with a PrintStream(new NullOutputStream).</p>
+
+<h3>Version 4</h3>
+
+<p>Now we introduce the AbstractBoardGame class which implements methods 
+common to TicTacToe and Gomoku.  In the end, it implements everything 
+except the TicTacToe constructor.  Methods that previously were private in 
+TicTacToe 3 are now protected in AbstractBoardGame.  We patch Player to 
+use the BoardGame interface instead of the concrete TicTacToe class.</p>
+
+<h3>Version 5</h3>
+
+<p>Now we check which parts of AbstractBoardGame are generic and can be used 
+for both TicTacToe and Gomoku.  The number of rows and columns are fine.  
+We introduce an abstract init() method to initialize the rows, columns & score.
+We patch the set() and get() methods 
+to be indexed by ints instead of chars.  move() now is indexed by String 
+coordinates which are parsed by getCol() and getRow().  toString() must be 
+rewritten.  We must similarly rewrite inRange(), invariant() and test().
+We patch toString() and checkWinner()  
+Finally we patch the BoardGame interface and its clients, including the 
+GameDriver.
+<p><h3>Version 6</h3>
+
+<p>Finally we are ready to introduce Gomoku.  Its implementation is trivial -- 
+like TicTacToe, it just extends AbstractBoardGame by overriding the Template method init().
+Modify GameDriver to query the user for either TicTacToe or Gomoku.
+We introduce AbstractBoardGameTest so that TicTacToeTest and GomokuTest can share common methods, auch as assertFails(Runnable).</p>
+
+<p>The hardest part is to reimplement checkWinner() -- the 
+algorithm to check if one of the players has won the game.  We introduce 
+the notion of a Runner -- an object that starts from the last position 
+played and runs in both directions (horizontally, vertically and 
+diagonally) to see if the winning number of squares have been occupied.  To 
+implement Runner, BoardGame.get() and inRange() must be public.  We patch 
+GameDriver to query the user for TicTacToe or Gomoku, run our tests, and we 
+are done!</p>
+
+
+<!-- ---------------------------------------------------------------- -->
+<HR/>
+<h2>GUI Construction</h2>
+
+<p>We will introduce a GUI for the (single-user) game in several steps.</p>
+
+<h3>Version 7</h3>
+
+<p>We start by introduce a new package, p2.tictactoe.gui.
+We introduce GameGUI (as subclass of Frame), Place (a place on the board), PlaceListener (to listen to mouse clicks) and GUIplayer (to represent the Player).
+We change Player to be an interface.
+We also introduce InactivePlayer (to represent the Player "nobody") and StreamPlayer (which gets its moves from a Stream).</p>
+
+<p>A GUI architecture requires that the BoardGame and Player both be passive (since 
+they passively wait for mouse events to happen, rather than actively 
+querying for a String input).  We consequently must shift some 
+responsibilities between the BoardGame and Player classes.  We remove 
+BoardGame.update() and shift this responsibility to
+GameDriver.playGame().  (We run our tests and continue.)</p>
+
+<p>We cannot force jar files to enable assertions, so we replace the java assertions by our own myAssert() method.
+We must accordingly adapt GameDriver, StreamPlayer, PlaceListener etc.</p>
+
+<h3>Version 8</h3>
+
+<p>We will need separate views for the two players, and we will need a way to instantiate either TicTacToe or Gomoku.
+We introduce GameConsole to start the two games.
+We also TicTacToe and Gomoku factory methods to GameGUI.
+When a game is over, the same players may want to continue, so we add BoardGame.restart() to restart (re-initialize) a game.</p>
+
+<p>We must only create one game for every two Players, so we need a "factory" to instantiate games only when we need them.
+We add GameFactory and two subclasses to create TicTacToe & Gomoku.
+We modify AbstractBoardGame and GameGUI to keep track of which Player they represent.
+We add BoardGame methods join() and ready() to join a game and to know when there are two Players ready to play.
+We introduce further error-checking by throwing InvalidMoveException with messages indicating that game is not ready or that it is not your turn.
+We patch the tests to call game.join() twice.</p>
+
+<h3>Version 9</h3>
+
+<p>Now we will start to distribute the game.</p>
+
+<p>We first introduce new packages p2.tictactoe.rmi for the remote interfaces and p2.tictactoe.server for the server implementations.
+We add Remote interfaces for GameServer, Game and Observer.
+We also convert Move to be Serializable and adapt all classes that use it.</p>
+
+<p>We add GameServer, GameProxy and GameObserver, which implement the Remote interfaces.
+Java doesn't support multiple inheritance.  Since GameView already extends 
+Frame, we must introduce a separate GameObserver that extends UnicastRemoteObject to 
+handle observer updates. <p></p>
+
+<p>We now convert the GUI components to depend on RemoteGame instead of BoardGame.
+We add BoardGame.addObserver(RemoteGame).
+We rewrite GameConsole to build a local GUI connected to a RemoteGame and weadapt GameGUI to act as a view for a RemoteGame.
+We change Place to work with a local mark (char) rather than a (remote) Player.
+We must also rewrite PlaceListener.mouseClicked() to work with RemoteGame.
+We check that all the game tests still pass.</p>
+
+<p>We fix the ant build.xml to call rmic for the three server classes.
+We add shell commands to start and kill the server and to start the client.</p>
+
+<p>Our server objects (GameServer and GameProxy) are liable to receiving 
+concurrent requests from clients, so we must declare the public methods as 
+synchronized (this goes beyond what we can cover in this course!).  
+(GameObserver.update() doesn't need to be synchronized, because it can 
+never be called concurrently?  Nothing else on client side might get 
+concurrent updates since updates only come from server!)  
+GameServer.joinTicTacToe() must be synchronized since state is modified 
+here (alternatively, we synchronize GameFactory.getGame()).
+GameProxy methods must be synchronized, but the BoardGame it wraps
+must not be (to avoid nested monitor problems). <p></p>
+
+<p class="menu">[ <a href="http://www.iam.unibe.ch/%7Escg/Teaching/P2/index.html">P2
+Home</a> ]</p>
+
+<p class="lastModified">Last modified: $Date: 2008-03-01 17:31:14 +0100 (Sat, 01 Mar 2008) $</p>
+
+</body>
+</html>
