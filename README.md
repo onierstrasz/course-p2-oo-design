@@ -1,6 +1,6 @@
 # P2 -- Object-Oriented Design
 
-
+![MVC](figures/mvc.png)
 
 This repo contains the lecture material for the MSc level course “P2 -- Object-Oriented Design”.
 
