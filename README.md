@@ -2,7 +2,7 @@
 
 ![MVC](figures/mvc.png)
 
-This repo contains the lecture material for the MSc level course “P2 -- Object-Oriented Design”.
+This repo contains the lecture material for the Bachelor level course “P2 -- Object-Oriented Design”.
 
 This Bachelor course provides an introduction to object-oriented design in Java with an emphasis on practical techniques for developing complex software systems.
 
